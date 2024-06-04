@@ -18,4 +18,3 @@ EXPOSE 80
 
 # Command to run the Gunicorn server
 CMD ["gunicorn", "-b", "0.0.0.0:80", "app:app"]
-
