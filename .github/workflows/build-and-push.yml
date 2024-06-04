@@ -29,5 +29,5 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/${{ github.repository }}/pubip:latest
+          tags: ghcr.io/jas0n0ss/pubip:latest
 
