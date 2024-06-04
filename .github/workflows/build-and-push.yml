@@ -26,8 +26,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./static_web/Dockerfile
+          file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/jas0n0ss/pubip:latest
+          tags: ghcr.io/jas0n0ss/webip:latest
 
