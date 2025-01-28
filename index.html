@@ -3,26 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Public IP Address</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- Add web icon -->
-    <link rel="icon" type="image/x-icon" href="https://icon-icons.com/downloadimage.php?id=117864&root=1858/ICO/512/&file=iconfinder-dedicatedipaddress-4263513_117864.ico">
-    <!-- Add Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Network Info</title>
+    <style>
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                opacity: 1;
+            }
+            20%, 24%, 55% {
+                opacity: 0.4;
+            }
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: #00ff00;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            max-width: 400px;
+            animation: flicker 2s infinite;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 40px #0f0, 0 0 80px #0f0;
+        }
+        p {
+            font-size: 18px;
+            margin: 5px 0;
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+        }
+        .glitch {
+            text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px #00ff00;
+            animation: flicker 1.5s infinite;
+        }
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                rgba(0, 255, 0, 0.03) 0px,
+                rgba(0, 255, 0, 0.03) 2px,
+                transparent 2px,
+                transparent 4px
+            );
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Public IP Address</h1>
-    </header>
-    <main>
-        <div class="container">
-            <p id="ip-address">Loading...</p>
-        </div>
-    </main>
-    <footer>
-        <p>&copy; 2024 Jas0n0ss</p>
-    </footer>
+    <div class="scanline"></div>
+    <div class="container">
+        <h1 class="glitch">Your Network Information</h1>
+        <p id="ip">Fetching IP...</p>
+        <p id="location">Fetching location...</p>
+        <p id="isp">Fetching ISP...</p>
+    </div>
 
-    <script src="script.js"></script>
+    <script>
+        async function fetchISPInfo() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+
+                document.getElementById('ip').textContent = `IP Address: ${data.ip}`;
+                document.getElementById('location').textContent = `Location: ${data.city}, ${data.region}, ${data.country_name}`;
+                document.getElementById('isp').textContent = `ISP: ${data.org}`;
+            } catch (error) {
+                document.getElementById('ip').textContent = 'Error fetching network information.';
+                document.getElementById('location').textContent = '';
+                document.getElementById('isp').textContent = '';
+                console.error('Fetch error:', error);
+            }
+        }
+
+        fetchISPInfo();
+    </script>
 </body>
 </html>
+
